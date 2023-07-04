@@ -1,0 +1,16 @@
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2022-06-09T17:34:51.356Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2022-06-09T17:34:51.366Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2022-06-09T17:34:51.404Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2022-06-09T17:34:51.474Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-01-16T18:01:29.793Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-01-16T18:01:29.793Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-01-16T18:01:29.795Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-01-16T18:01:29.795Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T17:56:02.497Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T17:56:02.497Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T17:56:02.497Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T17:56:02.497Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T18:00:42.575Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T18:00:42.575Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T18:00:42.954Z"}
+{"label":"application","level":"info","message":"App is running on http://localhost:3000","timestamp":"2023-03-21T18:00:42.954Z"}

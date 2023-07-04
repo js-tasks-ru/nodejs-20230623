@@ -1,0 +1,12 @@
+doctype html
+html
+    head
+        title Hello
+        script(src="main.js")
+    body
+        p.title.m3.p-4(data-id=5) Hello, #{user.name}
+        p.description Count: #{count}
+        if user.age < 18
+            p sorry, only for 18+
+        else
+            p welcome
