@@ -1,16 +1,28 @@
 /**
- * readable (file, network)
- * writable (file, network)
- * duplex, transform (gzip)
+ * Readable, Writable, Duplex/Transform
  */
 
-const fs = require('node:fs');
-const zlib = require('node:zlib');
+const stream = require('stream');
 
-const streamIn = fs.createReadStream('text.txt');
-// const gzip = zlib.createGzip();
-const streamOut1 = fs.createWriteStream('text_out1.txt');
-const streamOut2 = fs.createWriteStream('text_out2.txt');
+// stream.Readable
+// stream.Writable
+// stream.Duplex, stream.Transform
 
-streamIn.pipe(streamOut1);
-streamIn.pipe(streamOut2);
+const fs = require('fs');
+const zlib = require('zlib');
+
+
+
+// gzipStream.write('lalal');
+// gzipStream.on('data', chunk => console.log(chunk));
+
+const read = fs.createReadStream('bigimage.jpeg');
+const write = fs.createWriteStream('gziped.gz');
+const gzipStream = zlib.createGzip();
+
+// .Readable, .Writable
+// .on('end') .on('data')
+// .write()
+
+// fileIn -> gzip -> aaa -> ... -> ... -> fileOut
+read.pipe(gzipStream).pipe(write);

@@ -1,34 +1,31 @@
-/**
- * IN: banana apple peach strawberry
- * OUT: banana pineapple peach strawberry
- * 
- * apple -> pineapple
- */
+// apple banana apple -> apple cherry apple
 
-const stream = require('node:stream'); // { Transform: class  }
+const stream = require('stream');
 
-class ReplacerStream extends stream.Transform {
-  constructor(options) {
-    super(options);
-    this.from = options.from;
-    this.to = options.to;
-  }
+class Replacer extends stream.Transform {
+    static createReplacerStream(options) {
+        return new Replacer(options);
+    }
 
-  _transform(chunk, encoding, callback) {
-    callback(null, chunk.toString().replaceAll(this.from, this.to));
-  }
+    constructor(options) {
+        super();
+
+        this.from = options.from;
+        this.to = options.to;
+    }
+
+    _transform(chunk, encoding, callback) {
+        const str = chunk.toString();
+        callback(null, str.replaceAll(this.from, this.to));
+    }
 }
 
-module.exports = ReplacerStream;
+module.exports = Replacer;
 
-// const replacerStream = new ReplacerStream({
-//     from: 'banana',
-//     to: 'pineapple'
+// const r = Replacer.createReplacerStream({ from: 'apple', to: 'watermelon' });
+
+// r.on('data', chunk => {
+//     console.log(chunk.toString());
 // });
 
-// replacerStream.on('data', chunk => {
-//     console.log('data:', chunk.toString());
-// });
-
-// replacerStream.write('banana apple peach strawberry apple banana apple peach');
-// replacerStream.end();
+// r.write('apple banana apple');
