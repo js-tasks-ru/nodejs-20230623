@@ -1,6 +1,10 @@
 const { Transform } = require('node:stream');
 
 class ReplacerStream extends Transform {
+    static createReplacerStream(options) {
+        return new ReplacerStream(options);
+    }
+
     constructor(options) {
         super(options);
 
@@ -11,11 +15,14 @@ class ReplacerStream extends Transform {
     _transform(chunk, encoding, callback) {
         const str = chunk.toString();
 
-        if (process.env.NODE_ENV === 'test' && str === 'throw') {
-            return callback(new Error('test error'));
+        if (process.env.NODE_ENV === 'test' && str === 'throw error') {
+            callback(new Error('replacer error'));
+            return;
         }
 
-        callback(null, str.replaceAll(this.from, this.to));
+        setTimeout(() => {
+            callback(null, str.replaceAll(this.from, this.to));
+        }, 100);
     }
 }
 

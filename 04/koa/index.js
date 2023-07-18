@@ -1,68 +1,53 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyparser = require('koa-bodyparser');
-const serve = require('koa-static');
-const fs = require('node:fs');
 
 const app = new Koa();
-const router = new Router();
+const router = new Router({ prefix: '/api' });
+const bodyparser = require('./libs/bodyparser');
 
-const users = [];
-
-// ctx.request.body = {name: "Alex", ...}
-app.use(bodyparser());
-app.use(serve('public'));
-
-// ctx - context
 app.use(async (ctx, next) => {
-    const now = Date.now();
-    
-    ctx.state.foo = 'bar';
-
+    const requestStart = Date.now();
     await next();
-
-    const timeElapsed = Date.now() - now;
-    console.log('time elapsed', timeElapsed, 'ms');
+    console.log('url', ctx.url, 'time taken:', Date.now() - requestStart, 'ms');
 });
 
-app.use(async (ctx, next) => {
-    await new Promise(resolve => {
-        setTimeout(resolve, 1000);
-    });
+app.use(bodyparser());
+// ctx.request.body
+
+router.use(async (ctx, next) => {
+    if (!ctx.headers.authorization) ctx.throw(401);
+    const token = ctx.headers.authorization.split(' ')[1];
+    const [username, password] = atob(token).split(':');
+
+    if (username !== 'admin' || password !== 'passw0rd') ctx.throw(401);
     return next();
 });
 
-function checkChrome(ctx, next) {
-    if (!ctx.headers['user-agent'].includes('Postman')) {
-        // ctx.status = 400;
-        // ctx.body = 'please use chrome';
-        // return;
-        ctx.throw(400, 'please use chrome');
-    }
+// status = 301 302
+// headers.location = '/lala'
 
-    return next();
-}
-
-router.get('/users', async (ctx, next) => {
-    ctx.body = users;
+router.get('/redirect', (ctx, next) => {
+    // ctx.status = 301;
+    // ctx.set('location', 'https://google.com');
+    ctx.redirect('https://google.com');
 });
 
-// /users/alex
-router.get('/users/:name', async (ctx, next) => {
-    ctx.body = `hello ${ctx.params.name} from GET /users/:name endpoint`;
+router.post('/upload', async (ctx, next) => {
+    ctx.body = 'successfully uploaded';
 });
 
-router.post('/users', checkChrome, async (ctx, next) => {
-    users.push({
-        id: users.length,
-        name: ctx.request.body.name,
-        planet: ctx.request.body.planet,
-    });
-    ctx.body = users[users.length - 1];
+router.get('/profile/:name', async (ctx, next) => {
+    // ctx.params.name
+    ctx.body = `hello, ${ctx.params.name}`;
 });
 
 app.use(router.routes());
 
-// app.use(...)
+app.use((ctx, next) => {
+    console.log('lala');
+});
 
-app.listen(3000);
+app.listen(3000, () => {
+    console.log('launched');
+});

@@ -1,34 +1,32 @@
 const assert = require('node:assert');
 const sinon = require('sinon');
-const ReplacerStream = require('../replacer');
+const Replacer = require('../replacer');
 
-describe('replacer stream tests', () => {
-    it('test #1', (done) => {
-        const replacerStream = new ReplacerStream({
-            from: 'banana',
-            to: 'pineapple'
-        });
+describe('replacer tests', () => {
+    it('should replace apple to banana', (done) => {
+        const r = Replacer.createReplacerStream({ from: 'apple', to: 'watermelon' });
 
         const onData = sinon.spy();
 
-        replacerStream.on('data', onData);
+        r.on('data', onData);
 
-        replacerStream.on('close', () => {
+        r.on('end', () => {
+            assert.strictEqual(onData.callCount, 2);
+
             assert.strictEqual(
                 onData.getCall(0).args[0].toString(), 
-                'pineapple apple peach strawberry apple pineapple apple peach'
+                'watermelon banana watermelon'
             );
             assert.strictEqual(
                 onData.getCall(1).args[0].toString(), 
-                'orange pineapple'
+                'cherry strawberry orange'
             );
 
-            assert.strictEqual(onData.callCount, 2);
             done();
         });
 
-        replacerStream.write('banana apple peach strawberry apple banana apple peach');
-        replacerStream.write('orange banana');
-        replacerStream.end();
+        r.write('apple banana apple');
+        r.write('cherry strawberry orange');
+        r.end();
     });
 });

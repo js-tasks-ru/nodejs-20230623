@@ -1,43 +1,44 @@
-const assert = require('node:assert');
 const axios = require('axios');
+const assert = require('node:assert');
 const server = require('../server');
 
 describe('server tests', () => {
-    before('server launch', (done) => {
+    before((done) => {
         server.listen(3000, done);
     });
-    
-    after('terminate server', (done) => {
-        server.close(done);
-    });
 
-    it('replace string', async () => {
-        const response = await axios.post(
-            'http://localhost:3000?from=banana&to=orange',
-            'banana apple peach strawberry apple banana apple peach'
-        );
+    it('should replace strings', async () => { // === return new Promise()
+        const response = await axios('http://localhost:3000', {
+            method: 'POST',
+            params: {
+                from: 'apple',
+                to: 'banana'
+            },
+            data: 'cherry apple watermelon strawberry orange apple'
+        });
 
-        assert.strictEqual(response.status, 200);
         assert.strictEqual(
             response.data, 
-            'orange apple peach strawberry apple orange apple peach'
+            'cherry banana watermelon strawberry orange banana'
         );
     });
 
-    it('throws error', async () => {
-        const response = await axios(
-            'http://localhost:3000?from=banana&to=orange',
-            {
-                method: 'POST',
-                data: 'throw',
-                validateStatus: () => true,
-            }
-        );
+    it('should throw error', async () => { // === return new Promise()
+        const response = await axios('http://localhost:3000', {
+            method: 'POST',
+            params: {
+                from: 'apple',
+                to: 'banana'
+            },
+            data: 'throw error',
+            validateStatus: () => true,
+        });
 
         assert.strictEqual(response.status, 500);
-        assert.strictEqual(
-            response.data, 
-            'internal error'
-        );
+        assert.strictEqual(response.data, 'internal error');
+    });
+
+    after((done) => {
+        server.close(done);
     });
 });
