@@ -5,7 +5,7 @@ const schema = new mongoose.Schema({
   email: {
     type: String,
     required: 'email - обязательное поле',
-    unique: 'такой email уже есть',
+    unique: 'такой email уже зарегистрирован',
     validate: [{
       validator: value => {
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);

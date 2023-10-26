@@ -1,4 +1,5 @@
 const http = require('node:http');
+
 const handler = require('./handler');
 
 const server = new http.Server();

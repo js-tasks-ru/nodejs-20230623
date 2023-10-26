@@ -1,28 +1,35 @@
-const { Transform } = require('node:stream');
+// apple cherry tomato watermelon banana pineapple
+// apple lemon tomato watermelon banana pineapple
 
-class ReplacerStream extends Transform {
-    static createReplacerStream(options) {
-        return new ReplacerStream(options);
-    }
+const stream = require('node:stream');
 
+class ReplacerStream extends stream.Transform {
     constructor(options) {
         super(options);
 
         this.from = options.from;
         this.to = options.to;
+        this.remaining = '';
     }
 
     _transform(chunk, encoding, callback) {
-        const str = chunk.toString();
+        let parts = this.remaining + chunk.toString();
+        parts = parts.split(' ');
+        
+        this.remaining = parts.at(-1);
 
-        if (process.env.NODE_ENV === 'test' && str === 'throw error') {
-            callback(new Error('replacer error'));
-            return;
-        }
+        this.push(
+            parts
+                .slice(0, -1)
+                .map(part => part === this.from ? this.to : part)
+                .join(' ')
+        );
 
-        setTimeout(() => {
-            callback(null, str.replaceAll(this.from, this.to));
-        }, 100);
+        callback();
+    }
+
+    _flush(callback) {
+        callback(null, this.remaining === this.from ? this.to : this.remaining);
     }
 }
 

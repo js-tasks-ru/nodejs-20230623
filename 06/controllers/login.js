@@ -1,4 +1,5 @@
 const uuid = require('uuid/v4');
+var jwt = require('jsonwebtoken');
 
 const passport = require('../libs/passport');
 const Session = require('../models/Session');
@@ -16,25 +17,17 @@ module.exports.login = async function login(ctx, next) {
       return;
     }
     
-    // ctx.body = 'ok';
+    // 1. generate secret key & save in DB
+    // 2. send secret key
 
-    // generate unique key
+    // const key = JSON.stringify({
+    //   user: user.id,
+    //   isAdmin: false,
+    // });
 
-    // store in database
-    // pass to the client
+    const key = jwt.sign({ user: user.id, isAdmin: user.isAdmin }, 'killer-is-jim');
+    // await Session.create({...});
 
-    const key = JSON.stringify({
-      unique: uuid(),
-      isAdmin: true,
-      balance: 1000, // 800
-    });
-    await Session.create({
-      key,
-      user: user._id,
-      ua: ctx.headers['user-agent'],
-    });
-
-    // ctx.cookies.set('session', key);
     ctx.body = key;
 
   })(ctx, next);

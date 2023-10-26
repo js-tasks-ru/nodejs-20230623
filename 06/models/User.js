@@ -55,9 +55,6 @@ function generateSalt() {
       resolve(buffer.toString('hex'));
     });
   });
-  // return new Promise(resolve => {
-  //   resolve("salt");
-  // });
 }
 
 // const user = new User({ email: 'user@mail.com', displayName: 'user' });

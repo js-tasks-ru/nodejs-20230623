@@ -1,0 +1,7 @@
+bookstore
+  each book in books
+    book(category=`${book.category}`)
+        title(lang="en") #{book.title}
+        author #{book.author}
+        year #{book.year}
+        price #{book.price}

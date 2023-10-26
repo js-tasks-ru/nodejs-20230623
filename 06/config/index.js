@@ -1,7 +1,3 @@
-require('dotenv').config({ path: 'secret.env' });
-
-console.log(process.env.DB_HOST);
-
 module.exports = {
   jwtsecret: process.env.JWT_SECRET || "killer-is-jim",
   mongodb: {

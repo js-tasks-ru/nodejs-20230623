@@ -1,7 +1,7 @@
 // const http = require('node:http');
 // const handler = require('./handler');
 import http from 'node:http';
-import handler from './handler.js';
+import handler from './handler.mjs';
 
 const server = new http.Server();
 

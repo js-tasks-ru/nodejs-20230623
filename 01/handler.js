@@ -1,11 +1,14 @@
-let obj = {};
-
 let i = 0;
-function handler(req, res) {
-    obj[i] = '*'.repeat(100000).split('');
 
-    i+=10;
-    res.end(i.toString());
+const obj = {};
+
+function handler(req, res) {
+    i++;
+
+    obj[i] = "*".repeat(100000).split('');
+
+    res.end(`you are ${i}th`);
 }
 
+// module.exports = {foo: 'bar'}
 module.exports = handler;

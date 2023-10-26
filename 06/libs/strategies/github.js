@@ -3,8 +3,8 @@ const config = require('../../config');
 
 module.exports = new Strategy(
   {
-    clientID: 'Iv1.f63f868286f9ac4a',
-    clientSecret: 'fb259972dc3edcc8cb1ebf1884c5552ff2cd0c78',
+    clientID: config.providers.github.app_id,
+    clientSecret: config.providers.github.app_secret,
     callbackURL: 'http://localhost:3000/oauth/github',
   },
   (accessToken, refreshToken, profile, done) => {

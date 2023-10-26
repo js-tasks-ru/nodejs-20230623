@@ -1,45 +1,43 @@
 const socketIO = require('socket.io');
+const UAParser = require('ua-parser-js');
 
 function socket(server) {
-  const io = socketIO(server);
+    const websocketServer = socketIO(server);
 
-  io.use((request, next) => {
-    console.log(request.handshake.headers['user-agent']);
+    websocketServer.use((req, next) => {
+        const userAgent = req.handshake.headers['user-agent'];
+        if (!userAgent) 
+            return next(new Error('not allowed (no user-agent)'));
 
-    // const user = await User.findOne({ session: session });
-    // request.user = user;
-    request.user = { name: 'Ivan' };
+        const ua = new UAParser(userAgent);
+        const browser = ua.getBrowser();
 
-    next();
-  });
+        console.log(browser);
 
-  io.on('connection', socket => {
-    console.log('socket connected', socket.user, socket.id);
-    // await Session.updateOne({ user: socket.user }, { socketId: socket.id });
-
-    socket.on('client_user_typing', isTyping => {
-      console.log('client_user_typing', isTyping);
+        if (browser.name !== 'Chrome')
+            return next(new Error('not allowed (only Chrome)'));
+        
+        next();
     });
 
-    socket.emit('lala', () => {
-      console.log('user has received the message!');
+    websocketServer.on('connection', websocket => {
+        console.log(websocket.id);
+
+        websocket.on('client_user_typing', isTyping => {
+            console.log('client_user_typing', isTyping);
+        });
+
+        websocket.on('client_user_message', message => {
+            websocketServer.emit('server_user_message', message);
+            // websocket.broadcast.emit('server_user_message', message);
+
+            // await Message.create({});
+        });
+
+        websocket.on('disconnect', () => {
+            console.log('disconnected', websocket.id);
+        });
     });
-
-    // io.to('yMrxv1BTxE75jNEzAAAA').emit('message', 'hello!');
-
-    socket.on('client_user_message', message => {
-      io.emit('server_user_message', message);
-    });
-
-    // 'price_changed'
-    // 'red_card' 'goal' 'corner'
-
-    socket.on('disconnect', () => {
-      console.log('socket disconnected', socket.id);
-
-      // await Session.updateOne({ user: socket.user }, { socketId: undefined });
-    });
-  });
 }
 
 module.exports = socket;

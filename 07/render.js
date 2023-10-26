@@ -1,7 +1,7 @@
 function render(userName) {
   return `
     <html>
-      <head><title>hello world</title></head>
+      <head><title>hello world</tite></head>
       <body>
       <h1>hey ${userName}</h1>
       <p>Welcome to our website</p>

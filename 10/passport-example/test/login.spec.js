@@ -8,7 +8,7 @@ const config = require('../config');
 
 // puppeteer options
 const opts = {
-  headless: false,
+  headless: true,
   slowMo: 50,
   timeout: 60000,
   args: [
@@ -49,9 +49,17 @@ describe('passport-vkontakte tests', () => {
     
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    await page.type("input[name*='email']", config.providers.vkontakte.test.login);
-    await page.type("input[name*='pass']", config.providers.vkontakte.test.password);
-    await page.click('#install_allow');
+    await page.type("input[name*='login']", config.providers.vkontakte.test.login);
+    await page.click("button[type*='submit']");
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    await page.type("input[name*='password']", config.providers.vkontakte.test.password);
+    await page.click("button[type*='submit']");
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    await page.click("button[data-test-id*='continue-as-button']");
     
     // await page.waitForNavigation({waitUntil: 'networkidle0'});
     await new Promise(resolve => setTimeout(resolve, 3000));

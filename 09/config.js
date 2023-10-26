@@ -6,7 +6,7 @@
 
 module.exports = {
   mongodb: {
-    uri: (process.env.NODE_ENV === 'test')
+    uri: (process.env.NODE_ENV === 'test') // test|development|production
       ? 'mongodb://localhost/test-auth'
       : process.env.MONGODB_URI || 'mongodb://localhost/auth',
   },
